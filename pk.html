@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Input Form</title>
+  
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #e8d2d5;
+}
+
+.container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+align-items: center;
+
+      justify-content: center;
+  border: 1px solid #ccc;
+  background-color: #FFFFFF;
+}
+
+h2 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+}
+
+
+
+input[type="submit"] {
+  background-color: #001f3f;
+  color: #fff;
+  padding: 10px;
+  cursor: pointer;
+}
+
+
+
+</style>
+<body>
+  <div class="container">
+    <h2>Product Upload Form</h2>
+    <form action="pk.php" method="POST" onsubmit="return validateForm()">
+      <label for="pid">Product ID:</label>
+      <input type="int" id="pid" name="pid" required>
+      <label for="brand">Brand:</label>
+      <input type="text" id="brand" name="brand" required>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+      <label for="address">Cost:</label>
+      <input type="int" id="cost" name="cost" required>
+      <label for="quantity">Quantity:</label>
+      <input type="int" id="quantity" name="quantity" required><br>
+      <input type="submit" value="Submit">
+    </form>
+    <script>
+        function validateForm() {
+  var pid = document.getElementById('pid').value;
+  var brand = document.getElementById('brand').value;
+  var name = document.getElementById('name').value;
+  var cost = document.getElementById('cost').value;
+  var quantity = document.getElementById('quantity').value;
+
+  if (pid === '' || brand === '' || name === '' || cost === '' || quantity === '') {
+    alert('Please fill in all fields.');
+    return false;
+  }
+
+  return true;
+}
+
+    </script>
+  </div>
+  <script src="pk.js"></script>
+</body>
+</html>

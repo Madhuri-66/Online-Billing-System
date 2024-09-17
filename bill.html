@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Form</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #e8d2d5;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #FFFFFF;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin-top: 10px;
+    }
+
+    #addButton {
+        background-color: #001f3f;
+        color: #fff;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    /* Styles for the Submit Table button */
+    #submitTable {
+        background-color: #001f3f;
+        color: #fff;
+        padding: 10px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    <div class="container">
+        <h1>Generate Bill</h1>
+        <form id="productForm" method="post">
+            <label for="user">User:</label>
+            <input type="text" id="user" name="user" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="pid">Product ID:</label>
+            <input type="text" id="pid" name="pid" required><br>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required><br>
+
+            <button type="button" id="addButton">ADD</button><br>
+        </form>
+
+        <table id="productTable" border="1">
+            <tr>
+                <th>PID</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </table><br>
+
+        <!-- Add the submit button below the table -->
+        <button type="button" id="submitTable">Submit Table</button><br>
+        <p id="totalSum">Total Sum: </p>
+
+        <script>
+            // Function to validate the form before adding a new row
+            function validateForm() {
+                var user = document.getElementById("user").value.trim();
+                var email = document.getElementById("email").value.trim();
+                if (user === "" || email === "") {
+                    alert("Please fill in both username and email.");
+                    return false;
+                }
+                return true;
+            }
+
+            document.getElementById("addButton").addEventListener("click", function (event) {
+                event.preventDefault();
+
+                // Validate the form before proceeding
+                if (!validateForm()) {
+                    return;
+                }
+
+                var form = document.getElementById("productForm");
+                var formData = new FormData(form);
+
+                fetch("bill.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        var table = document.getElementById("productTable");
+                        var newRow = table.insertRow(-1);
+
+                        var cell1 = newRow.insertCell(0);
+                        var cell2 = newRow.insertCell(1);
+                        var cell3 = newRow.insertCell(2);
+                        var cell4 = newRow.insertCell(3);
+
+                        cell1.innerHTML = data.pid;
+                        cell2.innerHTML = data.name;
+                        cell3.innerHTML = data.quantity;
+                        cell4.innerHTML = data.total1;
+
+                        // Clear the form fields after adding the row
+                        document.getElementById("pid").value = "";
+                        document.getElementById("quantity").value = "";
+
+                        // Recalculate the total sum and display
+                        calculateTotalSum();
+                    } else if (data.status === "insufficient_quantity") {
+                        alert("Insufficient quantity. Available quantity for PID " + data.pid + ": " + data.available_quantity);
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            });
+
+            // Function to calculate the sum of the "Total" column in the table
+            function calculateTotalSum() {
+                var table = document.getElementById("productTable");
+                var totalSum = 0;
+
+                // Loop through each row in the table (skip the header row)
+                for (var i = 1; i < table.rows.length; i++) {
+                    var totalCell = table.rows[i].cells[3];
+                    var totalValue = parseFloat(totalCell.innerText);
+                    totalSum += totalValue;
+                }
+
+                // Display the sum in the paragraph element
+                var totalSumElement = document.getElementById("totalSum");
+                totalSumElement.innerText = "Total Sum: " + totalSum;
+
+                return totalSum;
+            }
+
+            // Add an event listener to the submit button below the table
+            document.getElementById("submitTable").addEventListener("click", function () {
+                // Call the function to calculate the sum of the "Total" column
+                var totalSum = calculateTotalSum();
+
+                // Send the totalSum and form data to the server to add it to the database
+                var formData = new FormData(document.getElementById("productForm"));
+                formData.append("totalSum", totalSum);
+                formData.append("submitTable", true);
+
+                fetch("bill.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        console.log("Data submitted successfully!");
+
+                        // Clear the form fields after submitting the table
+                        document.getElementById("user").value = "";
+                        document.getElementById("email").value = "";
+
+                        // Clear the table content
+                        var table = document.getElementById("productTable");
+                        var rowCount = table.rows.length;
+                        for (var i = rowCount - 1; i > 0; i--) {
+                            table.deleteRow(i);
+                        }
+
+                        // Reset the total sum display
+                        var totalSumElement = document.getElementById("totalSum");
+                        totalSumElement.innerText = "Total Sum: ";
+                    } else {
+                        console.error("Error:", data.message);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        </script>
+    </div>
+</body>
+</html>

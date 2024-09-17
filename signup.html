@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* Adjusted to 'flex-start' */
+      padding-top: 50px; /* Added padding to push content further up */
+      background-color: #e8d2d5;
+    }
+
+    table {
+      border-collapse: collapse;
+      background-color: #f9f9f9;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    table td {
+      padding: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 200px; /* Adjust the width as needed */
+      padding: 5px; /* Adjust the padding as needed */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #001F3F;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #001F3F;
+    }
+  </style>
+</head>
+<body>
+
+  <table>
+    <tr>
+      <td colspan="2" style="text-align: center;">
+        <h2>Sign Up</h2>
+      </td>
+    </tr>
+    <form action="signup.php" method="post" onsubmit="return validateForm()">
+      <tr>
+        <td>Username:</td>
+        <td>
+          <input type="text" name="username" placeholder="Enter your username">
+          <div class="error-message" id="username-error"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>Password:</td>
+        <td>
+          <input type="password" name="password" id="password" placeholder="Enter your password">
+          <div class="error-message" id="password-error"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>Email Address:</td>
+        <td>
+          <input type="email" name="email" placeholder="Enter your email address">
+          <div class="error-message" id="email-error"></div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align: center;">
+          <input type="submit" value="Sign Up">
+        </td>
+      </tr>
+    </form>
+  </table>
+
+  <script>
+    function validateForm() {
+      // Get form elements
+      const usernameInput = document.getElementsByName("username")[0];
+      const passwordInput = document.getElementById("password");
+      const emailInput = document.getElementsByName("email")[0];
+      let isValid = true;
+
+      // Check if username is empty
+      if (usernameInput.value.trim() === "") {
+        document.getElementById("username-error").innerText = "Please enter your username.";
+        isValid = false;
+      } else {
+        document.getElementById("username-error").innerText = "";
+      }
+
+      // Check if password is empty
+      if (passwordInput.value.trim() === "") {
+        document.getElementById("password-error").innerText = "Please enter your password.";
+        isValid = false;
+      } else {
+        document.getElementById("password-error").innerText = "";
+      }
+
+      // Check password length
+      if (passwordInput.value.length < 5 || passwordInput.value.length > 12) {
+        document.getElementById("password-error").innerText = "Password must be between 5 and 12 characters.";
+        isValid = false;
+      }
+
+      // Check password pattern with regex
+      const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{5,12}$/;
+      if (!passwordPattern.test(passwordInput.value)) {
+        document.getElementById("password-error").innerText = "Password must have at least one uppercase letter, one special character, and one number.";
+        isValid = false;
+      }
+
+      // Check if email is empty
+      if (emailInput.value.trim() === "") {
+        document.getElementById("email-error").innerText = "Please enter your email address.";
+        isValid = false;
+      } else {
+        document.getElementById("email-error").innerText = "";
+      }
+
+      // Add any additional validation checks here if needed
+
+      // If all validation passes, return true to submit the form
+      return isValid;
+    }
+  </script>
+</body>
+</html>

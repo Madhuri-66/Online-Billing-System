@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .dashboard {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      flex: 0 0 250px;
+      background-color: #001f3f;
+      color: #f2e9e4;
+      padding: 20px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 0px;
+    }
+
+    .menu-heading {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .menu-item {
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+ 
+
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar"> 
+      <div class="menu-heading">Menu</div>
+      <a class="menu-item" onclick="loadMenu('pk.html')">Product Key</a><br><br>
+      <a class="menu-item" onclick="loadMenu('ur.php')">Sales Details</a><br><br>
+      <a class="menu-item" onclick="loadMenu('bill.html')">Generate Bill</a><br><br>
+      <a class="menu-item" onclick="loadMenu('em.php')">Stock Details</a><br><br>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <iframe id="menuFrame" src="welcome.html" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+
+  </div>
+
+  <script>
+    function loadMenu(menuUrl) {
+      const menuFrame = document.getElementById('menuFrame');
+      menuFrame.src = menuUrl;
+    }
+  </script>
+</body>
+</html>

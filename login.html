@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center ; /* Adjusted to 'flex-start' */
+      padding-top: 50px; /* Added padding to push content further up */
+      overflow: hidden; 
+      background-color: #e8d2d5;
+    }
+
+    table {
+      border-collapse: collapse;
+      background-color: #f9f9f9;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    table td {
+      padding: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 200px; /* Adjust the width as needed */
+      padding: 5px; /* Adjust the padding as needed */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #001F3F;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #001F3F;
+    }
+    
+  </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <td colspan="2" style="text-align: center;">
+        <h2>Login to Your Account</h2>
+      </td>
+    </tr>
+<form action="login.php" method="post">
+    <tr>
+      <td>Username:</td>
+      <td><input type="text" name="username" placeholder="Enter your username"></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><input type="password" name="password" placeholder="Enter your password"></td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: center;">
+        <input type="submit" value="Login">
+</tr>
+</form>
+<tr>
+<td colspan="2" style="text-align: center;">
+        <a href="signup.html">Sign Up</a>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
